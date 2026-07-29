@@ -24,6 +24,7 @@ export const navigationItems: NavigationItem[] = [
   { label: 'Architecture', to: '/architecture', icon: GitBranch },
   { label: 'Requirements', to: '/requirements', icon: ShieldCheck },
   { label: 'Roadmap', to: '/roadmap', icon: RouteIcon },
+  { label: "Graph Builder", to: "/graph-builder", icon: Network },
 ]
 
 export const docPages: Record<'vision' | 'architecture' | 'requirements' | 'roadmap', PageDefinition> = {
