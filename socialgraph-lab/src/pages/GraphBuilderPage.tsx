@@ -2,6 +2,7 @@ import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
 import AddFriendshipForm from '../components/graph/AddFriendshipForm'
 import AddPersonForm from '../components/graph/AddPersonForm'
 import FriendshipList from '../components/graph/FriendshipList'
+import GraphViewer from '../components/graph/GraphViewer'
 import PersonList from '../components/graph/PersonList'
 
 function GraphBuilderPage() {
@@ -51,9 +52,12 @@ function GraphBuilderWorkspace() {
           <AddFriendshipForm />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <PersonList />
-          <FriendshipList />
+        <div className="space-y-6">
+          <GraphViewer />
+          <div className="grid gap-6 lg:grid-cols-2">
+            <PersonList />
+            <FriendshipList />
+          </div>
         </div>
       </section>
     </div>
