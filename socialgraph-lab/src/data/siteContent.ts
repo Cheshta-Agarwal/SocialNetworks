@@ -1,9 +1,50 @@
-import { GitBranch, Home, Network, Route as RouteIcon, ShieldCheck } from 'lucide-react'
+import {
+  BookOpen,
+  GitBranch,
+  Home,
+  Layers3,
+  Network,
+  Route as RouteIcon,
+  ShieldCheck,
+  Sparkles,
+  Users,
+  Waypoints,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+
+export const routePaths = {
+  home: '/',
+  vision: '/vision',
+  architecture: '/architecture',
+  requirements: '/requirements',
+  roadmap: '/roadmap',
+  graphBuilder: '/graph-builder',
+  bfs: '/bfs',
+  dfs: '/dfs',
+  connectedComponents: '/connected-components',
+  cycleDetection: '/cycle-detection',
+  bipartite: '/bipartite',
+  shortestPath: '/shortest-path',
+  dijkstra: '/dijkstra',
+} as const
 
 export type NavigationItem = {
   label: string
   to: string
-  icon: typeof Home
+  icon: LucideIcon
+}
+
+export type NavigationSection = {
+  heading: string
+  items: NavigationItem[]
+}
+
+export type AlgorithmCard = {
+  title: string
+  summary: string
+  useCase: string
+  to: string
+  icon: LucideIcon
 }
 
 export type DocSection = {
@@ -18,13 +59,106 @@ export type PageDefinition = {
   sections: DocSection[]
 }
 
+export const navigationSections: NavigationSection[] = [
+  {
+    heading: 'Documentation',
+    items: [
+      { label: 'Vision', to: routePaths.vision, icon: BookOpen },
+      { label: 'Architecture', to: routePaths.architecture, icon: GitBranch },
+      { label: 'Requirements', to: routePaths.requirements, icon: ShieldCheck },
+      { label: 'Roadmap', to: routePaths.roadmap, icon: RouteIcon },
+    ],
+  },
+  {
+    heading: 'Graph',
+    items: [{ label: 'Graph Builder', to: routePaths.graphBuilder, icon: Network }],
+  },
+  {
+    heading: 'Traversal Algorithms',
+    items: [
+      { label: 'BFS', to: routePaths.bfs, icon: Layers3 },
+      { label: 'DFS', to: routePaths.dfs, icon: GitBranch },
+    ],
+  },
+  {
+    heading: 'Connectivity',
+    items: [
+      { label: 'Connected Components', to: routePaths.connectedComponents, icon: Users },
+      { label: 'Cycle Detection', to: routePaths.cycleDetection, icon: RouteIcon },
+      { label: 'Bipartite Check', to: routePaths.bipartite, icon: ShieldCheck },
+    ],
+  },
+  {
+    heading: 'Shortest Paths',
+    items: [
+      { label: 'Shortest Path', to: routePaths.shortestPath, icon: Waypoints },
+      { label: 'Dijkstra', to: routePaths.dijkstra, icon: Sparkles },
+    ],
+  },
+]
+
 export const navigationItems: NavigationItem[] = [
-  { label: 'Home', to: '/', icon: Home },
-  { label: 'Vision', to: '/vision', icon: Network },
-  { label: 'Architecture', to: '/architecture', icon: GitBranch },
-  { label: 'Requirements', to: '/requirements', icon: ShieldCheck },
-  { label: 'Roadmap', to: '/roadmap', icon: RouteIcon },
-  { label: "Graph Builder", to: "/graph-builder", icon: Network },
+  { label: 'Home', to: routePaths.home, icon: Home },
+  ...navigationSections.flatMap((section) => section.items),
+]
+
+export const algorithmCards: AlgorithmCard[] = [
+  {
+    title: 'Graph Builder',
+    summary: 'Create the social network by adding people and friendships.',
+    useCase: 'Build a class, club, or friend graph before running analysis.',
+    to: routePaths.graphBuilder,
+    icon: Network,
+  },
+  {
+    title: 'BFS',
+    summary: 'Find friends level by level from any starting person.',
+    useCase: 'Model friend discovery and shortest hop distance in an unweighted network.',
+    to: routePaths.bfs,
+    icon: Layers3,
+  },
+  {
+    title: 'DFS',
+    summary: 'Explore the network deeply before backtracking.',
+    useCase: 'Reveal communities, nested relationships, and traversal order.',
+    to: routePaths.dfs,
+    icon: GitBranch,
+  },
+  {
+    title: 'Connected Components',
+    summary: 'Detect isolated friend groups in the graph.',
+    useCase: 'Spot separate communities, classes, or disconnected social circles.',
+    to: routePaths.connectedComponents,
+    icon: Users,
+  },
+  {
+    title: 'Cycle Detection',
+    summary: 'Detect circular friendship chains.',
+    useCase: 'Check whether a social network has closed loops or redundant links.',
+    to: routePaths.cycleDetection,
+    icon: RouteIcon,
+  },
+  {
+    title: 'Bipartite Check',
+    summary: 'Verify whether the network can be split into two groups.',
+    useCase: 'Model two-team assignments or relationship constraints.',
+    to: routePaths.bipartite,
+    icon: ShieldCheck,
+  },
+  {
+    title: 'Shortest Path',
+    summary: 'Find the minimum-hop route between two people.',
+    useCase: 'Explain six degrees of separation in a social graph.',
+    to: routePaths.shortestPath,
+    icon: Waypoints,
+  },
+  {
+    title: 'Dijkstra',
+    summary: 'Find the weighted shortest route through the network.',
+    useCase: 'Extend the same graph model toward weighted social or influence paths.',
+    to: routePaths.dijkstra,
+    icon: Sparkles,
+  },
 ]
 
 export const docPages: Record<'vision' | 'architecture' | 'requirements' | 'roadmap', PageDefinition> = {

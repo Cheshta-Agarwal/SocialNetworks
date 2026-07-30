@@ -1,39 +1,43 @@
-import { buildAdjacencyList } from '../utils/adjacency'
 import type { TraversalAlgorithm, TraversalResult } from '../types/algorithm'
+import { buildAdjacencyList } from '../utils/adjacency'
 
 const emptyTraversalResult: TraversalResult = {
   visitedNodes: [],
   visitedEdges: [],
 }
 
-export const runBFS: TraversalAlgorithm = (graph, startNodeId) => {
+export const runDFS: TraversalAlgorithm = (graph, startNodeId) => {
   const adjacency = buildAdjacencyList(graph)
-  const startNeighbors = adjacency.get(startNodeId)
 
-  if (startNeighbors === undefined) {
+  if (!adjacency.has(startNodeId)) {
     return emptyTraversalResult
   }
 
   const visitedNodes = new Set<string>()
   const visitedEdges: TraversalResult['visitedEdges'] = []
   const visitOrder: string[] = []
-  const queue: string[] = [startNodeId]
+  const stack: string[] = [startNodeId]
 
-  visitedNodes.add(startNodeId)
+  while (stack.length > 0) {
+    const currentNodeId = stack.pop()
 
-  for (let queueIndex = 0; queueIndex < queue.length; queueIndex += 1) {
-    const currentNodeId = queue[queueIndex]
+    if (currentNodeId === undefined || visitedNodes.has(currentNodeId)) {
+      continue
+    }
+
+    visitedNodes.add(currentNodeId)
     visitOrder.push(currentNodeId)
 
     const neighbors = adjacency.get(currentNodeId) ?? []
 
-    for (const neighborId of neighbors) {
+    for (let index = neighbors.length - 1; index >= 0; index -= 1) {
+      const neighborId = neighbors[index]
+
       if (visitedNodes.has(neighborId)) {
         continue
       }
 
-      visitedNodes.add(neighborId)
-      queue.push(neighborId)
+      stack.push(neighborId)
       visitedEdges.push({
         sourceId: currentNodeId,
         targetId: neighborId,

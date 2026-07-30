@@ -11,3 +11,36 @@ export interface TraversalResult {
 }
 
 export type TraversalAlgorithm = (graph: Graph, startNodeId: string) => TraversalResult
+
+export interface ConnectedComponentsResult {
+  components: string[][]
+  componentCount: number
+}
+
+export interface CycleDetectionResult {
+  hasCycle: boolean
+}
+
+export interface BipartitePartitions {
+  left: string[]
+  right: string[]
+}
+
+export interface BipartiteResult {
+  isBipartite: boolean
+  partitions?: BipartitePartitions
+}
+
+export interface ShortestPathResult {
+  path: string[]
+  visitedNodes: string[]
+  visitedEdges: TraversalEdge[]
+  distance: number
+}
+
+export interface DijkstraResult {
+  shortestPath: string[]
+  totalDistance: number
+  visitedNodes: string[]
+  visitedEdges: TraversalEdge[]
+}
