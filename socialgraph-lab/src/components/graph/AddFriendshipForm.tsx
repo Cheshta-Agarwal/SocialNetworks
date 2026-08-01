@@ -31,16 +31,15 @@ function AddFriendshipForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
+    <form onSubmit={handleSubmit} className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-4">
       <div className="space-y-2">
-        <h2 className="text-lg font-semibold text-white">Add Friendship</h2>
-        <p className="text-sm text-slate-300">Connect two different people in the graph.</p>
+        <h2 className="text-lg font-semibold text-white">Add Connection</h2>
       </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        <div className="space-y-2">
+      <div className="mt-auto grid gap-4 md:grid-cols-2">
+        <div className="mb-4">
           <label className="block text-sm font-medium text-slate-200" htmlFor="source-person">
-            Person A
+            From
           </label>
           <select
             id="source-person"
@@ -49,7 +48,7 @@ function AddFriendshipForm() {
             className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40 focus:ring-2 focus:ring-cyan-300/20 disabled:text-slate-500"
             disabled={!hasEnoughPeople}
           >
-            <option value="">Select person</option>
+            <option value="">User A</option>
             {sourceOptions.map((node) => (
               <option key={node.id} value={node.id}>
                 {node.displayName}
@@ -60,7 +59,7 @@ function AddFriendshipForm() {
 
         <div className="space-y-2">
           <label className="block text-sm font-medium text-slate-200" htmlFor="target-person">
-            Person B
+            To
           </label>
           <select
             id="target-person"
@@ -69,7 +68,7 @@ function AddFriendshipForm() {
             className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40 focus:ring-2 focus:ring-cyan-300/20 disabled:text-slate-500"
             disabled={!hasEnoughPeople}
           >
-            <option value="">Select person</option>
+            <option value="">User B</option>
             {targetOptions.map((node) => (
               <option key={node.id} value={node.id}>
                 {node.displayName}
@@ -84,7 +83,7 @@ function AddFriendshipForm() {
         disabled={!sourceId || !targetId || sourceId === targetId}
         className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Connect people
+        Create Connection
       </button>
     </form>
   )

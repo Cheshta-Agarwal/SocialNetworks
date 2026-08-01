@@ -14,11 +14,7 @@ import type { LucideIcon } from 'lucide-react'
 
 export const routePaths = {
   home: '/',
-  vision: '/vision',
-  architecture: '/architecture',
-  requirements: '/requirements',
-  roadmap: '/roadmap',
-  graphBuilder: '/graph-builder',
+  documentation: '/documentation',
   bfs: '/bfs',
   dfs: '/dfs',
   connectedComponents: '/connected-components',
@@ -61,55 +57,69 @@ export type PageDefinition = {
 
 export const navigationSections: NavigationSection[] = [
   {
-    heading: 'Documentation',
+    heading: 'Tools',
+    items: [],
+  },
+
+  {
+    heading: 'Network Exploration',
     items: [
-      { label: 'Vision', to: routePaths.vision, icon: BookOpen },
-      { label: 'Architecture', to: routePaths.architecture, icon: GitBranch },
-      { label: 'Requirements', to: routePaths.requirements, icon: ShieldCheck },
-      { label: 'Roadmap', to: routePaths.roadmap, icon: RouteIcon },
+      {
+        label: 'Friend Discovery',
+        to: routePaths.bfs,
+        icon: Layers3,
+      },
+      {
+        label: 'Community Explorer',
+        to: routePaths.dfs,
+        icon: GitBranch,
+      },
     ],
   },
+
   {
-    heading: 'Graph',
-    items: [{ label: 'Graph Builder', to: routePaths.graphBuilder, icon: Network }],
-  },
-  {
-    heading: 'Traversal Algorithms',
+    heading: 'Network Analysis',
     items: [
-      { label: 'BFS', to: routePaths.bfs, icon: Layers3 },
-      { label: 'DFS', to: routePaths.dfs, icon: GitBranch },
+      {
+        label: 'Communities',
+        to: routePaths.connectedComponents,
+        icon: Users,
+      },
+      {
+        label: 'Circular Friendships',
+        to: routePaths.cycleDetection,
+        icon: RouteIcon,
+      },
+      {
+        label: 'Group Compatibility',
+        to: routePaths.bipartite,
+        icon: ShieldCheck,
+      },
     ],
   },
+
   {
-    heading: 'Connectivity',
+    heading: 'Connection Analysis',
     items: [
-      { label: 'Connected Components', to: routePaths.connectedComponents, icon: Users },
-      { label: 'Cycle Detection', to: routePaths.cycleDetection, icon: RouteIcon },
-      { label: 'Bipartite Check', to: routePaths.bipartite, icon: ShieldCheck },
-    ],
-  },
-  {
-    heading: 'Shortest Paths',
-    items: [
-      { label: 'Shortest Path', to: routePaths.shortestPath, icon: Waypoints },
-      { label: 'Dijkstra', to: routePaths.dijkstra, icon: Sparkles },
+      {
+        label: 'Friend Connection',
+        to: routePaths.shortestPath,
+        icon: Waypoints,
+      },
+      {
+        label: 'Strongest Route',
+        to: routePaths.dijkstra,
+        icon: Sparkles,
+      },
     ],
   },
 ]
 
 export const navigationItems: NavigationItem[] = [
   { label: 'Home', to: routePaths.home, icon: Home },
-  ...navigationSections.flatMap((section) => section.items),
 ]
 
 export const algorithmCards: AlgorithmCard[] = [
-  {
-    title: 'Graph Builder',
-    summary: 'Create the social network by adding people and friendships.',
-    useCase: 'Build a class, club, or friend graph before running analysis.',
-    to: routePaths.graphBuilder,
-    icon: Network,
-  },
   {
     title: 'BFS',
     summary: 'Find friends level by level from any starting person.',

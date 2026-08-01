@@ -1,52 +1,42 @@
-import { useMemo } from 'react'
+import { Network } from 'lucide-react'
 import { useGraphStore } from '../../store/graphStore'
 
 function FriendshipList() {
-  const { graph, removeEdge } = useGraphStore()
+  const { graph } = useGraphStore()
 
-  const friendships = useMemo(
-    () =>
-      graph.edges.map((edge) => ({
-        ...edge,
-        sourceName: graph.nodes.find((node) => node.id === edge.sourceId)?.displayName ?? edge.sourceId,
-        targetName: graph.nodes.find((node) => node.id === edge.targetId)?.displayName ?? edge.targetId,
-      })),
-    [graph.edges, graph.nodes],
-  )
+  const getPersonName = (id: string) =>
+    graph.nodes.find((node) => node.id === id)?.displayName ?? id
 
   return (
-    <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold text-white">Friendships</h2>
-        <p className="text-sm text-slate-300">Current connections between people.</p>
+    <div className="flex h-full flex-col">
+      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+        <Network className="h-4 w-4 text-emerald-300" />
+        <h2 className="text-sm font-semibold text-white">
+          Connections ({graph.edges.length})
+        </h2>
       </div>
 
-      <div className="mt-5 space-y-3">
-        {friendships.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
-            No friendships have been created yet.
+      <div className="flex-1 overflow-y-auto">
+        {graph.edges.length === 0 ? (
+          <p className="px-4 py-4 text-sm text-slate-400">
+            No connections created yet.
           </p>
         ) : (
-          friendships.map((edge) => (
-            <div
-              key={`${edge.sourceId}-${edge.targetId}`}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-slate-950/45 px-4 py-3"
-            >
-              <p className="text-sm font-medium text-white">
-                {edge.sourceName} ↔ {edge.targetName}
-              </p>
-              <button
-                type="button"
-                onClick={() => removeEdge({ sourceId: edge.sourceId, targetId: edge.targetId })}
-                className="rounded-xl border border-rose-400/20 bg-rose-400/10 px-3 py-2 text-sm font-medium text-rose-100 transition hover:bg-rose-400/20"
+          <ul>
+            {graph.edges.map((edge) => (
+              <li
+                key={`${edge.sourceId}-${edge.targetId}`}
+                className="border-b border-white/5 px-4 py-3 text-sm text-slate-200 transition hover:bg-white/5"
               >
-                Remove
-              </button>
-            </div>
-          ))
+                {getPersonName(edge.sourceId)}
+                <span className="mx-2 text-slate-500">↔</span>
+                {getPersonName(edge.targetId)}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
-    </section>
+    </div>
   )
 }
 

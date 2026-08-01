@@ -8,7 +8,6 @@ import DFSPage from './pages/DFSPage'
 import DocumentPage from './pages/DocumentPage'
 import BFSPage from './pages/BFSPage'
 import ShortestPathPage from './pages/ShortestPathPage'
-import GraphBuilderPage from './pages/GraphBuilderPage'
 import HomePage from './pages/HomePage'
 import { docPages } from './data/siteContent'
 
@@ -17,11 +16,7 @@ function App() {
 		<AppShell>
 			<Routes>
 				<Route path="/" element={<HomePage />} />
-				<Route path="/vision" element={<DocumentPage page={docPages.vision} />} />
-				<Route path="/architecture" element={<DocumentPage page={docPages.architecture} />} />
-				<Route path="/requirements" element={<DocumentPage page={docPages.requirements} />} />
-				<Route path="/roadmap" element={<DocumentPage page={docPages.roadmap} />} />
-				<Route path="/graph-builder" element={<GraphBuilderPage />} />
+				<Route path="/documentation" element={<DocumentPage />} />
 				<Route path="/bfs" element={<BFSPage />} />
 				<Route path="/dfs" element={<DFSPage />} />
 				<Route path="/shortest-path" element={<ShortestPathPage />} />

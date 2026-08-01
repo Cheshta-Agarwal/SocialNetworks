@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import GraphViewer from '../components/graph/GraphViewer'
 import { runCycleDetection, runDFS } from '../algorithms'
 import type { TraversalResult } from '../types/algorithm'
-import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
+import { useGraphStore } from '../store/graphStore'
 
 const emptyTraversalResult: TraversalResult = {
   visitedNodes: [],
@@ -11,9 +11,7 @@ const emptyTraversalResult: TraversalResult = {
 
 function CycleDetectionPage() {
   return (
-    <GraphStoreProvider>
-      <CycleDetectionWorkspace />
-    </GraphStoreProvider>
+    <CycleDetectionWorkspace />
   )
 }
 

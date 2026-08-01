@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import GraphViewer from '../components/graph/GraphViewer'
 import { runShortestPath } from '../algorithms'
 import type { ShortestPathResult } from '../types/algorithm'
-import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
+import { useGraphStore } from '../store/graphStore'
 
 const emptyShortestPathResult: ShortestPathResult = {
   path: [],
@@ -13,9 +13,7 @@ const emptyShortestPathResult: ShortestPathResult = {
 
 function ShortestPathPage() {
   return (
-    <GraphStoreProvider>
-      <ShortestPathWorkspace />
-    </GraphStoreProvider>
+    <ShortestPathWorkspace />
   )
 }
 

@@ -5,9 +5,28 @@ export interface TraversalEdge {
   targetId: string
 }
 
+export interface TraversalStats {
+  // BFS
+  directFriends?: number
+  reachableUsers?: number
+  friendsOfFriends?: number
+  maxDistance?: number
+  // DFS
+  communitySize?: number
+  explorationDepth?: number
+  exploredUsers?: number
+}
+
 export interface TraversalResult {
   visitedNodes: string[]
   visitedEdges: TraversalEdge[]
+
+  stats?: TraversalStats
+
+  suggestions?: {
+    id: string
+    mutualFriends: number
+  }[]
 }
 
 export type TraversalAlgorithm = (graph: Graph, startNodeId: string) => TraversalResult
@@ -41,6 +60,13 @@ export interface ShortestPathResult {
 export interface DijkstraResult {
   shortestPath: string[]
   totalDistance: number
+
   visitedNodes: string[]
   visitedEdges: TraversalEdge[]
+
+  stats?: {
+    connectionLength: number
+    exploredUsers: number
+    routeExists: boolean
+  }
 }

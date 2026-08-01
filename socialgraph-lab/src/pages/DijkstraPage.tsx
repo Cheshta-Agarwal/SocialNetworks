@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import GraphViewer from '../components/graph/GraphViewer'
 import { runDijkstra } from '../algorithms'
 import type { DijkstraResult } from '../types/algorithm'
-import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
+import { useGraphStore } from '../store/graphStore'
 
 const emptyDijkstraResult: DijkstraResult = {
   shortestPath: [],
@@ -13,9 +13,7 @@ const emptyDijkstraResult: DijkstraResult = {
 
 function DijkstraPage() {
   return (
-    <GraphStoreProvider>
-      <DijkstraWorkspace />
-    </GraphStoreProvider>
+    <DijkstraWorkspace />
   )
 }
 
@@ -49,29 +47,24 @@ function DijkstraWorkspace() {
     <div className="space-y-6">
       <section className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-cyan-400/10 via-slate-950/50 to-emerald-400/10 p-6 shadow-2xl shadow-slate-950/20">
         <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">
-          Dijkstra
+          Strongest Route
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-          Find the shortest weighted-ready route between two people.
+          Discover the strongest connection route between two people across the social network.
         </h1>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
-          The current implementation assumes unit weights while keeping the algorithm structure ready
-          for weighted edges later.
-        </p>
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
         <div className="space-y-6">
           <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
             <div className="space-y-2">
-              <h2 className="text-lg font-semibold text-white">Run Algorithm</h2>
-              <p className="text-sm text-slate-300">Select a source and destination node.</p>
+              <h2 className="text-lg font-semibold text-white">Find Route</h2>
             </div>
 
             <div className="mt-5 grid gap-4">
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-slate-200" htmlFor="dijkstra-source">
-                  Source node
+                  From
                 </label>
                 <select
                   id="dijkstra-source"
@@ -91,7 +84,7 @@ function DijkstraWorkspace() {
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-slate-200" htmlFor="dijkstra-destination">
-                  Destination node
+                  To
                 </label>
                 <select
                   id="dijkstra-destination"
@@ -122,13 +115,12 @@ function DijkstraWorkspace() {
 
           <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
             <div className="space-y-2">
-              <h2 className="text-lg font-semibold text-white">Execution Summary</h2>
-              <p className="text-sm text-slate-300">Current Dijkstra result.</p>
+              <h2 className="text-lg font-semibold text-white">Route Summary</h2>
             </div>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-4 sm:col-span-2">
-                <p className="text-sm text-slate-400">Shortest Path</p>
+                <p className="text-sm text-slate-400">Connection Route</p>
                 <p className="mt-2 text-sm font-medium text-white">
                   {result.shortestPath.length > 0 ? result.shortestPath.join(' → ') : 'No path computed yet'}
                 </p>
@@ -140,11 +132,11 @@ function DijkstraWorkspace() {
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-                <p className="text-sm text-slate-400">Visited Nodes</p>
+                <p className="text-sm text-slate-400">People Explored</p>
                 <p className="mt-2 text-2xl font-semibold text-white">{result.visitedNodes.length}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-4 sm:col-span-2">
-                <p className="text-sm text-slate-400">Visited Edges</p>
+                <p className="text-sm text-slate-400">Connections Checked</p>
                 <p className="mt-2 text-2xl font-semibold text-white">{result.visitedEdges.length}</p>
               </div>
             </div>

@@ -43,8 +43,15 @@ export function runDijkstra(
     return {
       shortestPath: [startNodeId],
       totalDistance: 0,
+
       visitedNodes: [startNodeId],
       visitedEdges: [],
+
+      stats: {
+        connectionLength: 0,
+        exploredUsers: 1,
+        routeExists: true,
+      },
     }
   }
 
@@ -79,9 +86,18 @@ export function runDijkstra(
 
       return {
         shortestPath,
+
         totalDistance: currentDistance,
+
         visitedNodes,
+
         visitedEdges,
+
+        stats: {
+          connectionLength: shortestPath.length - 1,
+          exploredUsers: visitedNodes.length,
+          routeExists: true,
+        },
       }
     }
 
@@ -110,6 +126,11 @@ export function runDijkstra(
       totalDistance: -1,
       visitedNodes,
       visitedEdges,
+      stats: {
+        connectionLength: 0,
+        exploredUsers: visitedNodes.length,
+        routeExists: false,
+      },
     }
 }
 

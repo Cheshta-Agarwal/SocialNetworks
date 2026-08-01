@@ -8,41 +8,107 @@ const emptyTraversalResult: TraversalResult = {
 
 export const runBFS: TraversalAlgorithm = (graph, startNodeId) => {
   const adjacency = buildAdjacencyList(graph)
-  const startNeighbors = adjacency.get(startNodeId)
 
-  if (startNeighbors === undefined) {
+  if (!adjacency.has(startNodeId)) {
     return emptyTraversalResult
   }
 
-  const visitedNodes = new Set<string>()
+  const visited = new Set<string>()
   const visitedEdges: TraversalResult['visitedEdges'] = []
   const visitOrder: string[] = []
+
+  const distance = new Map<string, number>()
+
   const queue: string[] = [startNodeId]
 
-  visitedNodes.add(startNodeId)
+  visited.add(startNodeId)
+  distance.set(startNodeId, 0)
 
-  for (let queueIndex = 0; queueIndex < queue.length; queueIndex += 1) {
-    const currentNodeId = queue[queueIndex]
-    visitOrder.push(currentNodeId)
+  while (queue.length > 0) {
+    const current = queue.shift()!
 
-    const neighbors = adjacency.get(currentNodeId) ?? []
+    visitOrder.push(current)
 
-    for (const neighborId of neighbors) {
-      if (visitedNodes.has(neighborId)) {
+    const neighbors = adjacency.get(current) ?? []
+
+    for (const neighbor of neighbors) {
+      if (visited.has(neighbor)) {
         continue
       }
 
-      visitedNodes.add(neighborId)
-      queue.push(neighborId)
+      visited.add(neighbor)
+
+      distance.set(
+        neighbor,
+        (distance.get(current) ?? 0) + 1,
+      )
+
+      queue.push(neighbor)
+
       visitedEdges.push({
-        sourceId: currentNodeId,
-        targetId: neighborId,
+        sourceId: current,
+        targetId: neighbor,
       })
     }
   }
 
+  const directFriends =
+    adjacency.get(startNodeId)?.length ?? 0
+
+  const reachableUsers = visitOrder.length
+
+  let friendsOfFriends = 0
+
+  const suggestions: {
+    id: string
+    mutualFriends: number
+  }[] = []
+
+  const startFriends = new Set(adjacency.get(startNodeId) ?? [])
+
+  for (const [nodeId, level] of distance.entries()) {
+
+    if (level !== 2) {
+      continue
+    }
+
+    friendsOfFriends++
+
+    const neighbors = adjacency.get(nodeId) ?? []
+
+    let mutualFriends = 0
+
+    for (const neighbor of neighbors) {
+      if (startFriends.has(neighbor)) {
+        mutualFriends++
+      }
+    }
+
+    suggestions.push({
+      id: nodeId,
+      mutualFriends,
+    })
+  }
+
+  suggestions.sort(
+    (a, b) => b.mutualFriends - a.mutualFriends,
+  )
+
+  const maxDistance =
+    Math.max(...distance.values())
+
   return {
     visitedNodes: visitOrder,
+
     visitedEdges,
+
+    stats: {
+      directFriends,
+      reachableUsers,
+      friendsOfFriends,
+      maxDistance,
+    },
+
+    suggestions,
   }
 }

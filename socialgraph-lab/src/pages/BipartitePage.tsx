@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import type { CSSProperties } from 'react'
 import GraphViewer from '../components/graph/GraphViewer'
 import { runBipartiteCheck } from '../algorithms'
-import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
+import { useGraphStore } from '../store/graphStore'
 
 const LEFT_PARTITION_STYLE: CSSProperties = {
   backgroundColor: '#1d4ed8',
@@ -20,9 +20,7 @@ const RIGHT_PARTITION_STYLE: CSSProperties = {
 
 function BipartitePage() {
   return (
-    <GraphStoreProvider>
-      <BipartiteWorkspace />
-    </GraphStoreProvider>
+    <BipartiteWorkspace />
   )
 }
 

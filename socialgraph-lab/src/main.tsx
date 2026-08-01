@@ -5,10 +5,14 @@ import App from './App'
 import './index.css'
 import '@xyflow/react/dist/style.css'
 
+import { GraphStoreProvider } from './store/graphStore'
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<React.StrictMode>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</React.StrictMode>,
+  <React.StrictMode>
+    <BrowserRouter>
+      <GraphStoreProvider>
+        <App />
+      </GraphStoreProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
 )

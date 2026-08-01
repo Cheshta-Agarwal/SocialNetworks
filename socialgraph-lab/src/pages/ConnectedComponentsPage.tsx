@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import type { CSSProperties } from 'react'
 import GraphViewer from '../components/graph/GraphViewer'
 import { runConnectedComponents } from '../algorithms'
-import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
+import { useGraphStore } from '../store/graphStore'
 
 const COMPONENT_PALETTE: CSSProperties[] = [
   { backgroundColor: '#1d4ed8', border: '1.5px solid #1e3a8a', color: '#ffffff' },
@@ -15,9 +15,7 @@ const COMPONENT_PALETTE: CSSProperties[] = [
 
 function ConnectedComponentsPage() {
   return (
-    <GraphStoreProvider>
-      <ConnectedComponentsWorkspace />
-    </GraphStoreProvider>
+    <ConnectedComponentsWorkspace />
   )
 }
 

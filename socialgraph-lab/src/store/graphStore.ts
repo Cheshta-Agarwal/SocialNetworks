@@ -7,6 +7,7 @@ type GraphStoreValue = {
   removeNode: (nodeId: Person['id']) => void
   addEdge: (edge: Friendship) => void
   removeEdge: (edge: Friendship) => void
+  setGraph: (graph: Graph) => void
 }
 
 type GraphStoreProviderProps = {
@@ -101,6 +102,9 @@ export function GraphStoreProvider({ children, initialGraph = emptyGraph }: Grap
             edges: nextEdges,
           }
         })
+      },
+      setGraph: (graph) => {
+        setGraph(graph)
       },
     }),
     [graph],

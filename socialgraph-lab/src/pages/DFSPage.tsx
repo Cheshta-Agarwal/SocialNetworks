@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import GraphViewer from '../components/graph/GraphViewer'
-import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
+import { useGraphStore } from '../store/graphStore'
 import { runDFS } from '../algorithms'
 import type { TraversalResult } from '../types/algorithm'
 
@@ -11,9 +11,7 @@ const emptyTraversalResult: TraversalResult = {
 
 function DFSPage() {
   return (
-    <GraphStoreProvider>
-      <DFSWorkspace />
-    </GraphStoreProvider>
+    <DFSWorkspace />
   )
 }
 

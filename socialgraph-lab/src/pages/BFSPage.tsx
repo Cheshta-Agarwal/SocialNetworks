@@ -1,128 +1,163 @@
 import { useMemo, useState } from 'react'
-import GraphViewer from '../components/graph/GraphViewer'
-import { GraphStoreProvider, useGraphStore } from '../store/graphStore'
-import { runBFS } from '../algorithms'
-import type { TraversalResult } from '../types/algorithm'
 
-const emptyTraversalResult: TraversalResult = {
-  visitedNodes: [],
-  visitedEdges: [],
-}
+import GraphViewer from '../components/graph/GraphViewer'
+import { runBFS } from '../algorithms/bfs'
+import { useGraphStore } from '../store/graphStore'
 
 function BFSPage() {
-  return (
-    <GraphStoreProvider>
-      <BFSWorkspace />
-    </GraphStoreProvider>
-  )
-}
-
-function BFSWorkspace() {
   const { graph } = useGraphStore()
-  const [selectedNodeId, setSelectedNodeId] = useState('')
-  const [traversalResult, setTraversalResult] = useState<TraversalResult>(emptyTraversalResult)
+  const [startNodeId, setStartNodeId] = useState('')
+  const bfsResult = useMemo(() => {
+    if (!startNodeId) return null
+    return runBFS(graph, startNodeId)
+  }, [graph, startNodeId])
 
-  const selectedNodeExists = useMemo(
-    () => graph.nodes.some((node) => node.id === selectedNodeId),
-    [graph.nodes, selectedNodeId],
-  )
-
-  const canRunBFS = selectedNodeExists && graph.nodes.length > 0
-
-  function handleRunBFS() {
-    if (!selectedNodeExists) {
-      return
-    }
-
-    setTraversalResult(runBFS(graph, selectedNodeId))
-  }
+  const reachableUsers = bfsResult?.stats?.reachableUsers ?? 0
+  const directFriends = bfsResult?.stats?.directFriends ?? 0
+  const maxDistance = bfsResult?.stats?.maxDistance ?? 0
+  const friendSuggestions = bfsResult?.suggestions ?? []
 
   return (
     <div className="space-y-6">
-      <section className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-cyan-400/10 via-slate-950/50 to-emerald-400/10 p-6 shadow-2xl shadow-slate-950/20">
+      <section className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-cyan-400/10 via-slate-950/40 to-indigo-400/10 p-8">
         <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">
-          BFS Visualization
+          FRIEND DISCOVERY
         </p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-          Run breadth first search from a selected person.
+
+        <h1 className="mt-3 text-4xl font-semibold text-white">
+          Discover people beyond your immediate friend circle.
         </h1>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
-          This page reuses the shared graph viewer and stores the traversal result locally for the
-          current run.
+
+        <p className="mt-5 max-w-3xl text-slate-300 leading-7">
+          Explore how your network expands from a selected user and
+          discover new people that are reachable through existing
+          friendships.
         </p>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+      <section className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
         <div className="space-y-6">
-          <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold text-white">Run BFS</h2>
-              <p className="text-sm text-slate-300">Choose a starting node and execute the traversal.</p>
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <h2 className="text-xl font-semibold text-white">
+              Choose User
+            </h2>
+
+            <select
+              value={startNodeId}
+              onChange={(e) => setStartNodeId(e.target.value)}
+              className="mt-5 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white"
+            >
+              <option value="">
+                Select a person
+              </option>
+
+              {graph.nodes.map((node) => (
+                <option
+                  key={node.id}
+                  value={node.id}
+                >
+                  {node.displayName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <h2 className="text-xl font-semibold text-white">
+              Network Insights
+            </h2>
+
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <StatCard
+                title="Direct Friends"
+                value={directFriends}
+              />
+
+              <StatCard
+                title="Reachable Users"
+                value={reachableUsers}
+              />
+
+              <StatCard
+                title="Maximum Distance"
+                value={maxDistance}
+              />
+
+              <StatCard
+                title="Suggestions"
+                value={friendSuggestions.length}
+              />
             </div>
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
 
-            <div className="mt-5 space-y-3">
-              <label className="block text-sm font-medium text-slate-200" htmlFor="bfs-start-node">
-                Start node
-              </label>
-              <select
-                id="bfs-start-node"
-                value={selectedNodeId}
-                onChange={(event) => setSelectedNodeId(event.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40 focus:ring-2 focus:ring-cyan-300/20 disabled:text-slate-500"
-                disabled={graph.nodes.length === 0}
-              >
-                <option value="">Select a person</option>
-                {graph.nodes.map((node) => (
-                  <option key={node.id} value={node.id}>
-                    {node.displayName}
-                  </option>
-                ))}
-              </select>
+            <h2 className="text-xl font-semibold text-white">
+              People You May Know
+            </h2>
 
-              <button
-                type="button"
-                onClick={handleRunBFS}
-                disabled={!canRunBFS}
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Run BFS
-              </button>
+            <div className="mt-4 space-y-2">
+              {friendSuggestions.length === 0 && (
+                <p className="text-slate-400">
+                  Select a user to discover new people.
+                </p>
+              )}
+
+              {friendSuggestions.map((suggestion) => {
+                const person = graph.nodes.find(
+                  (node) => node.id === suggestion.id,
+                )
+
+                return (
+                  <div key={suggestion.id} className="rounded-xl bg-slate-900/50 px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-white">
+                          {person?.displayName}
+                        </p>
+
+                        <p className="text-xs text-slate-400">
+                          {suggestion.mutualFriends} mutual friend{suggestion.mutualFriends !== 1 ? 's' : ''}
+                        </p>
+                      </div>
+
+                      <div className="rounded-full bg-cyan-400/15 px-3 py-1 text-xs font-semibold text-cyan-200">
+                        Suggested
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-          </section>
-
-          <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold text-white">Traversal Summary</h2>
-              <p className="text-sm text-slate-300">Results from the latest BFS execution.</p>
-            </div>
-
-            <dl className="mt-5 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-                <dt className="text-sm text-slate-400">Visit Order</dt>
-                <dd className="mt-2 text-sm font-medium text-white">
-                  {traversalResult.visitedNodes.length > 0
-                    ? traversalResult.visitedNodes.join(' → ')
-                    : 'No traversal run yet'}
-                </dd>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-                <dt className="text-sm text-slate-400">Visited Nodes</dt>
-                <dd className="mt-2 text-2xl font-semibold text-white">
-                  {traversalResult.visitedNodes.length}
-                </dd>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-                <dt className="text-sm text-slate-400">Traversed Edges</dt>
-                <dd className="mt-2 text-2xl font-semibold text-white">
-                  {traversalResult.visitedEdges.length}
-                </dd>
-              </div>
-            </dl>
-          </section>
+          </div>
         </div>
 
-        <GraphViewer />
+        <GraphViewer
+          highlightedNodes={bfsResult?.visitedNodes}
+          highlightedEdges={bfsResult?.visitedEdges}
+        />
       </section>
+    </div>
+  )
+}
+
+type StatCardProps = {
+  title: string
+  value: string | number
+}
+
+function StatCard({
+  title,
+  value,
+}: StatCardProps) {
+  return (
+    <div className="rounded-2xl bg-slate-950/50 p-4">
+      <p className="text-sm text-slate-400">
+        {title}
+      </p>
+
+      <p className="mt-2 text-3xl font-bold text-white">
+        {value}
+      </p>
     </div>
   )
 }

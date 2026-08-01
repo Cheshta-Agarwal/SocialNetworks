@@ -8,7 +8,6 @@ const emptyTraversalResult: TraversalResult = {
 
 export const runDFS: TraversalAlgorithm = (graph, startNodeId) => {
   const adjacency = buildAdjacencyList(graph)
-
   if (!adjacency.has(startNodeId)) {
     return emptyTraversalResult
   }
@@ -16,31 +15,42 @@ export const runDFS: TraversalAlgorithm = (graph, startNodeId) => {
   const visitedNodes = new Set<string>()
   const visitedEdges: TraversalResult['visitedEdges'] = []
   const visitOrder: string[] = []
-  const stack: string[] = [startNodeId]
+  const stack: {
+    nodeId: string
+    depth: number
+  }[] = [
+    {
+      nodeId: startNodeId,
+      depth: 0,
+    },
+  ]
+  let maxDepth = 0
 
   while (stack.length > 0) {
-    const currentNodeId = stack.pop()
-
-    if (currentNodeId === undefined || visitedNodes.has(currentNodeId)) {
+    const current = stack.pop()
+    if (!current) continue
+    const { nodeId, depth } = current
+    if (visitedNodes.has(nodeId)) {
       continue
     }
 
-    visitedNodes.add(currentNodeId)
-    visitOrder.push(currentNodeId)
+    visitedNodes.add(nodeId)
+    visitOrder.push(nodeId)
+    maxDepth = Math.max(maxDepth, depth)
+    const neighbors = adjacency.get(nodeId) ?? []
 
-    const neighbors = adjacency.get(currentNodeId) ?? []
-
-    for (let index = neighbors.length - 1; index >= 0; index -= 1) {
-      const neighborId = neighbors[index]
-
+    for (let i = neighbors.length - 1; i >= 0; i--) {
+      const neighborId = neighbors[i]
       if (visitedNodes.has(neighborId)) {
         continue
       }
-
-      stack.push(neighborId)
       visitedEdges.push({
-        sourceId: currentNodeId,
+        sourceId: nodeId,
         targetId: neighborId,
+      })
+      stack.push({
+        nodeId: neighborId,
+        depth: depth + 1,
       })
     }
   }
@@ -48,5 +58,10 @@ export const runDFS: TraversalAlgorithm = (graph, startNodeId) => {
   return {
     visitedNodes: visitOrder,
     visitedEdges,
+    stats: {
+      communitySize: visitOrder.length,
+      exploredUsers: visitOrder.length,
+      explorationDepth: maxDepth,
+    },
   }
 }

@@ -1,42 +1,37 @@
+import { Users } from 'lucide-react'
 import { useGraphStore } from '../../store/graphStore'
 
 function PersonList() {
-  const { graph, removeNode } = useGraphStore()
+  const { graph } = useGraphStore()
 
   return (
-    <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold text-white">People</h2>
-        <p className="text-sm text-slate-300">All people currently in the graph.</p>
+    <div className="flex h-full flex-col">
+      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+        <Users className="h-4 w-4 text-cyan-300" />
+        <h2 className="text-sm font-semibold text-white">
+          People ({graph.nodes.length})
+        </h2>
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div className="flex-1 overflow-y-auto">
         {graph.nodes.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-sm text-slate-400">
-            No people have been added yet.
+          <p className="px-4 py-4 text-sm text-slate-400">
+            No people added yet.
           </p>
         ) : (
-          graph.nodes.map((node) => (
-            <div
-              key={node.id}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-slate-950/45 px-4 py-3"
-            >
-              <div>
-                <p className="font-medium text-white">{node.displayName}</p>
-                <p className="text-xs text-slate-400">Node ID: {node.id}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => removeNode(node.id)}
-                className="rounded-xl border border-rose-400/20 bg-rose-400/10 px-3 py-2 text-sm font-medium text-rose-100 transition hover:bg-rose-400/20"
+          <ul>
+            {graph.nodes.map((node) => (
+              <li
+                key={node.id}
+                className="border-b border-white/5 px-4 py-3 text-sm text-slate-200 transition hover:bg-white/5"
               >
-                Delete
-              </button>
-            </div>
-          ))
+                {node.displayName}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
-    </section>
+    </div>
   )
 }
 
