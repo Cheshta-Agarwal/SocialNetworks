@@ -17,6 +17,7 @@ function AddPersonForm() {
     addNode({
       id: crypto.randomUUID(),
       displayName: trimmedName,
+      role: 'Student',
     })
 
     setDisplayName('')
@@ -25,7 +26,7 @@ function AddPersonForm() {
   return (
     <form onSubmit={handleSubmit} className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-4">
       <div className="space-y-2">
-        <h2 className="text-lg font-semibold text-white">Username</h2>
+        <h2 className="text-lg font-semibold text-white">Add Student</h2>
       </div>
       <div className="space-y-2">
         <input
@@ -33,7 +34,7 @@ function AddPersonForm() {
           type="text"
           value={displayName}
           onChange={(event) => setDisplayName(event.target.value)}
-          placeholder="Enter a valid username"
+          placeholder="Enter student name"
           className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/40 focus:ring-2 focus:ring-cyan-300/20"
         />
       </div>
@@ -43,7 +44,7 @@ function AddPersonForm() {
         disabled={!displayName.trim()}
         className="mt-auto inline-flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Add user
+        Add Student
       </button>
     </form>
   )

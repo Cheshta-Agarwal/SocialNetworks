@@ -11,7 +11,7 @@ function DocumentPage() {
         </p>
 
         <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white">
-          SocialGraph Lab
+          PlacementConnect
         </h2>
 
         <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">

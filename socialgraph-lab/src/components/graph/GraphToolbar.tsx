@@ -47,7 +47,7 @@ function GraphToolbar() {
   }
 
   return (
-    <div className="flex justify-end gap-3">
+    <div className="space-y-3">
 
       <input
         ref={inputRef}
@@ -59,18 +59,18 @@ function GraphToolbar() {
 
       <button
         onClick={() => inputRef.current?.click()}
-        className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-emerald-400"
+        className="inline-flex w-full items-center justify-start gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
       >
         <Upload className="h-4 w-4" />
-        Import
+        Import Network
       </button>
 
       <button
         onClick={handleExport}
-        className="inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-400"
+        className="inline-flex w-full items-center justify-start gap-2 rounded-xl bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
       >
         <Download className="h-4 w-4" />
-        Export
+        Export Network
       </button>
 
     </div>

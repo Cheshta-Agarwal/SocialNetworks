@@ -38,35 +38,5 @@ export interface ConnectedComponentsResult {
 
 export interface CycleDetectionResult {
   hasCycle: boolean
-}
-
-export interface BipartitePartitions {
-  left: string[]
-  right: string[]
-}
-
-export interface BipartiteResult {
-  isBipartite: boolean
-  partitions?: BipartitePartitions
-}
-
-export interface ShortestPathResult {
-  path: string[]
-  visitedNodes: string[]
-  visitedEdges: TraversalEdge[]
-  distance: number
-}
-
-export interface DijkstraResult {
-  shortestPath: string[]
-  totalDistance: number
-
-  visitedNodes: string[]
-  visitedEdges: TraversalEdge[]
-
-  stats?: {
-    connectionLength: number
-    exploredUsers: number
-    routeExists: boolean
-  }
+  cycleEdges?: TraversalEdge[]
 }

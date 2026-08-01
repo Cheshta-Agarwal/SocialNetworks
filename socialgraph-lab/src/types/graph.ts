@@ -1,15 +1,14 @@
 /**
- * Represents a person in the social graph.
- * This is the minimal node shape used by the algorithm layer.
+ * Represents a student or professional profile in the placement network.
  */
 export interface Person {
   id: string
   displayName: string
+  role?: string
 }
 
 /**
- * Represents a relationship between two people in the social graph.
- * The edge is stored by node identifiers to keep the model UI-independent.
+ * Represents a professional connection between two profiles in the network.
  */
 export interface Friendship {
   sourceId: string
@@ -17,8 +16,7 @@ export interface Friendship {
 }
 
 /**
- * Represents the full social network graph.
- * Algorithms consume this shape as the single source of truth.
+ * Represents the full placement network graph.
  */
 export interface Graph {
   nodes: Person[]

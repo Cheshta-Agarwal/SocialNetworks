@@ -12,14 +12,14 @@ function FriendshipList() {
       <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
         <Network className="h-4 w-4 text-emerald-300" />
         <h2 className="text-sm font-semibold text-white">
-          Connections ({graph.edges.length})
+          Professional Connections ({graph.edges.length})
         </h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         {graph.edges.length === 0 ? (
           <p className="px-4 py-4 text-sm text-slate-400">
-            No connections created yet.
+            No professional connections created yet.
           </p>
         ) : (
           <ul>

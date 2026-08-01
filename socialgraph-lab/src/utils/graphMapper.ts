@@ -1,8 +1,9 @@
+import { createElement } from 'react'
 import { MarkerType, type Edge, type Node } from '@xyflow/react'
 import type { Graph } from '../types/graph'
 
-const NODE_WIDTH = 180
-const NODE_HEIGHT = 64
+const NODE_WIDTH = 220
+const NODE_HEIGHT = 84
 const GRID_COLUMNS = 3
 const COLUMN_GAP = 48
 const ROW_GAP = 36
@@ -14,6 +15,7 @@ export function graphMapper(graph: Graph): { nodes: Node[]; edges: Edge[] } {
   const nodes = graph.nodes.map((person, index) => {
     const column = index % GRID_COLUMNS
     const row = Math.floor(index / GRID_COLUMNS)
+    const roleLabel = person.role ?? 'Student'
 
     return {
       id: person.id,
@@ -34,7 +36,25 @@ export function graphMapper(graph: Graph): { nodes: Node[]; edges: Edge[] } {
         y: row * (NODE_HEIGHT + ROW_GAP),
       },
       data: {
-        label: person.displayName,
+        label: createElement(
+          'div',
+          {
+            className: 'flex h-full flex-col items-start justify-center gap-1 text-left',
+          },
+          createElement(
+            'span',
+            { className: 'text-sm font-semibold text-slate-50' },
+            person.displayName,
+          ),
+          createElement(
+            'span',
+            {
+              className:
+                'rounded-full border border-cyan-300/20 bg-cyan-400/10 px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.18em] text-cyan-100',
+            },
+            roleLabel,
+          ),
+        ),
       },
     }
   })

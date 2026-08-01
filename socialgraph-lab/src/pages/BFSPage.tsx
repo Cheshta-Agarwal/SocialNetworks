@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
-
-import GraphViewer from '../components/graph/GraphViewer'
 import { runBFS } from '../algorithms/bfs'
+import GraphViewer from '../components/graph/GraphViewer'
+import MetricCard from '../components/ui/MetricCard'
 import { useGraphStore } from '../store/graphStore'
 
 function BFSPage() {
@@ -12,26 +12,25 @@ function BFSPage() {
     return runBFS(graph, startNodeId)
   }, [graph, startNodeId])
 
-  const reachableUsers = bfsResult?.stats?.reachableUsers ?? 0
   const directFriends = bfsResult?.stats?.directFriends ?? 0
   const maxDistance = bfsResult?.stats?.maxDistance ?? 0
   const friendSuggestions = bfsResult?.suggestions ?? []
+  const reachableProfessionals = Math.max((bfsResult?.stats?.reachableUsers ?? 0) - 1, 0)
 
   return (
     <div className="space-y-6">
       <section className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-cyan-400/10 via-slate-950/40 to-indigo-400/10 p-8">
         <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">
-          FRIEND DISCOVERY
+          DISCOVER ALUMNI
         </p>
 
         <h1 className="mt-3 text-4xl font-semibold text-white">
-          Discover people beyond your immediate friend circle.
+          Recommend alumni and professionals near a selected student.
         </h1>
 
         <p className="mt-5 max-w-3xl text-slate-300 leading-7">
-          Explore how your network expands from a selected user and
-          discover new people that are reachable through existing
-          friendships.
+          Explore how the campus network expands from a selected profile and uncover reachable
+          professionals ordered by mutual connections.
         </p>
       </section>
 
@@ -39,7 +38,7 @@ function BFSPage() {
         <div className="space-y-6">
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
             <h2 className="text-xl font-semibold text-white">
-              Choose User
+              Choose Student
             </h2>
 
             <select
@@ -48,7 +47,7 @@ function BFSPage() {
               className="mt-5 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white"
             >
               <option value="">
-                Select a person
+                Select a student or professional
               </option>
 
               {graph.nodes.map((node) => (
@@ -63,42 +62,39 @@ function BFSPage() {
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-xl font-semibold text-white">
-              Network Insights
-            </h2>
+              <h2 className="text-xl font-semibold text-white">Community Insights</h2>
 
-            <div className="mt-6 grid grid-cols-2 gap-4">
-              <StatCard
-                title="Direct Friends"
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <MetricCard
+                label="Direct Connections"
                 value={directFriends}
+                helperText="Immediate alumni or professional links from the selected student."
               />
-
-              <StatCard
-                title="Reachable Users"
-                value={reachableUsers}
+              <MetricCard
+                label="Reachable Professionals"
+                value={reachableProfessionals}
+                helperText="People the network can reach within the current placement graph."
               />
-
-              <StatCard
-                title="Maximum Distance"
+              <MetricCard
+                label="Network Radius"
                 value={maxDistance}
+                helperText="Maximum networking distance from the selected profile."
               />
-
-              <StatCard
-                title="Suggestions"
+              <MetricCard
+                label="Suggestions"
                 value={friendSuggestions.length}
+                helperText="Suggested alumni ordered by mutual connections."
               />
             </div>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
 
-            <h2 className="text-xl font-semibold text-white">
-              People You May Know
-            </h2>
+            <h2 className="text-xl font-semibold text-white">Suggested Connections</h2>
 
-            <div className="mt-4 space-y-2">
+            <div className="mt-4 max-h-[320px] space-y-2 overflow-y-auto pr-2">
               {friendSuggestions.length === 0 && (
                 <p className="text-slate-400">
-                  Select a user to discover new people.
+                  Select a student to discover alumni and professionals nearby.
                 </p>
               )}
 
@@ -116,12 +112,12 @@ function BFSPage() {
                         </p>
 
                         <p className="text-xs text-slate-400">
-                          {suggestion.mutualFriends} mutual friend{suggestion.mutualFriends !== 1 ? 's' : ''}
+                          {suggestion.mutualFriends} mutual connection{suggestion.mutualFriends !== 1 ? 's' : ''}
                         </p>
                       </div>
 
                       <div className="rounded-full bg-cyan-400/15 px-3 py-1 text-xs font-semibold text-cyan-200">
-                        Suggested
+                        Professional Reach
                       </div>
                     </div>
                   </div>
@@ -136,28 +132,6 @@ function BFSPage() {
           highlightedEdges={bfsResult?.visitedEdges}
         />
       </section>
-    </div>
-  )
-}
-
-type StatCardProps = {
-  title: string
-  value: string | number
-}
-
-function StatCard({
-  title,
-  value,
-}: StatCardProps) {
-  return (
-    <div className="rounded-2xl bg-slate-950/50 p-4">
-      <p className="text-sm text-slate-400">
-        {title}
-      </p>
-
-      <p className="mt-2 text-3xl font-bold text-white">
-        {value}
-      </p>
     </div>
   )
 }

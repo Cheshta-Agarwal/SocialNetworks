@@ -7,41 +7,65 @@ function hasCycleFromNode(
   parentId: string | null,
   adjacency: Map<string, string[]>,
   visited: Set<string>,
-): boolean {
+  parentMap: Map<string, string | null>,
+): string[] | null {
   visited.add(nodeId)
+  parentMap.set(nodeId, parentId)
 
   const neighbors = adjacency.get(nodeId) ?? []
 
   for (const neighborId of neighbors) {
     if (!visited.has(neighborId)) {
-      if (hasCycleFromNode(neighborId, nodeId, adjacency, visited)) {
-        return true
+      const cycleNodes = hasCycleFromNode(neighborId, nodeId, adjacency, visited, parentMap)
+
+      if (cycleNodes !== null) {
+        return cycleNodes
       }
 
       continue
     }
 
     if (neighborId !== parentId) {
-      return true
+      const cycleNodes = [neighborId]
+      let cursor: string | null = nodeId
+
+      while (cursor !== null && cursor !== neighborId) {
+        cycleNodes.push(cursor)
+        cursor = parentMap.get(cursor) ?? null
+      }
+
+      if (cursor === neighborId) {
+        cycleNodes.push(neighborId)
+        return cycleNodes.reverse()
+      }
     }
   }
 
-  return false
+  return null
 }
 
 export function runCycleDetection(graph: Graph): CycleDetectionResult {
   const adjacency = buildAdjacencyList(graph)
   const visited = new Set<string>()
+  const parentMap = new Map<string, string | null>()
 
   for (const node of graph.nodes) {
     if (visited.has(node.id)) {
       continue
     }
 
-    if (hasCycleFromNode(node.id, null, adjacency, visited)) {
-      return { hasCycle: true }
+    const cycleNodes = hasCycleFromNode(node.id, null, adjacency, visited, parentMap)
+
+    if (cycleNodes !== null) {
+      return {
+        hasCycle: true,
+        cycleEdges: cycleNodes.slice(0, -1).map((sourceId, index) => ({
+          sourceId,
+          targetId: cycleNodes[index + 1],
+        })),
+      }
     }
   }
 
-  return { hasCycle: false }
+  return { hasCycle: false, cycleEdges: [] }
 }

@@ -48,7 +48,7 @@ function AddFriendshipForm() {
             className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40 focus:ring-2 focus:ring-cyan-300/20 disabled:text-slate-500"
             disabled={!hasEnoughPeople}
           >
-            <option value="">User A</option>
+            <option value="">Student A</option>
             {sourceOptions.map((node) => (
               <option key={node.id} value={node.id}>
                 {node.displayName}
@@ -68,7 +68,7 @@ function AddFriendshipForm() {
             className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40 focus:ring-2 focus:ring-cyan-300/20 disabled:text-slate-500"
             disabled={!hasEnoughPeople}
           >
-            <option value="">User B</option>
+            <option value="">Student B</option>
             {targetOptions.map((node) => (
               <option key={node.id} value={node.id}>
                 {node.displayName}
@@ -83,7 +83,7 @@ function AddFriendshipForm() {
         disabled={!sourceId || !targetId || sourceId === targetId}
         className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Create Connection
+        Create Professional Connection
       </button>
     </form>
   )

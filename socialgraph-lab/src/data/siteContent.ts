@@ -1,14 +1,10 @@
 import {
   BookOpen,
-  GitBranch,
+  BriefcaseBusiness,
   Home,
   Layers3,
-  Network,
-  Route as RouteIcon,
-  ShieldCheck,
-  Sparkles,
+  ShieldAlert,
   Users,
-  Waypoints,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -19,9 +15,6 @@ export const routePaths = {
   dfs: '/dfs',
   connectedComponents: '/connected-components',
   cycleDetection: '/cycle-detection',
-  bipartite: '/bipartite',
-  shortestPath: '/shortest-path',
-  dijkstra: '/dijkstra',
 } as const
 
 export type NavigationItem = {
@@ -60,56 +53,28 @@ export const navigationSections: NavigationSection[] = [
     heading: 'Tools',
     items: [],
   },
-
   {
-    heading: 'Network Exploration',
+    heading: 'Algorithms',
     items: [
       {
-        label: 'Friend Discovery',
+        label: 'Discover Alumni',
         to: routePaths.bfs,
         icon: Layers3,
       },
       {
-        label: 'Community Explorer',
+        label: 'Professional Community Explorer',
         to: routePaths.dfs,
-        icon: GitBranch,
+        icon: BriefcaseBusiness,
       },
-    ],
-  },
-
-  {
-    heading: 'Network Analysis',
-    items: [
       {
-        label: 'Communities',
+        label: 'Community Analytics',
         to: routePaths.connectedComponents,
         icon: Users,
       },
       {
-        label: 'Circular Friendships',
+        label: 'Network Integrity Check',
         to: routePaths.cycleDetection,
-        icon: RouteIcon,
-      },
-      {
-        label: 'Group Compatibility',
-        to: routePaths.bipartite,
-        icon: ShieldCheck,
-      },
-    ],
-  },
-
-  {
-    heading: 'Connection Analysis',
-    items: [
-      {
-        label: 'Friend Connection',
-        to: routePaths.shortestPath,
-        icon: Waypoints,
-      },
-      {
-        label: 'Strongest Route',
-        to: routePaths.dijkstra,
-        icon: Sparkles,
+        icon: ShieldAlert,
       },
     ],
   },
@@ -117,57 +82,37 @@ export const navigationSections: NavigationSection[] = [
 
 export const navigationItems: NavigationItem[] = [
   { label: 'Home', to: routePaths.home, icon: Home },
+  { label: 'Documentation', to: routePaths.documentation, icon: BookOpen },
 ]
 
 export const algorithmCards: AlgorithmCard[] = [
   {
-    title: 'BFS',
-    summary: 'Find friends level by level from any starting person.',
-    useCase: 'Model friend discovery and shortest hop distance in an unweighted network.',
+    title: 'Discover Alumni',
+    summary: 'Find alumni and professionals level by level from any student.',
+    useCase: 'Model nearby alumni recommendations and professional reach.',
     to: routePaths.bfs,
     icon: Layers3,
   },
   {
-    title: 'DFS',
-    summary: 'Explore the network deeply before backtracking.',
-    useCase: 'Reveal communities, nested relationships, and traversal order.',
+    title: 'Professional Community Explorer',
+    summary: 'Explore a connected professional community depth-first.',
+    useCase: 'Reveal referral chains, community structure, and traversal order.',
     to: routePaths.dfs,
-    icon: GitBranch,
+    icon: BriefcaseBusiness,
   },
   {
-    title: 'Connected Components',
-    summary: 'Detect isolated friend groups in the graph.',
-    useCase: 'Spot separate communities, classes, or disconnected social circles.',
+    title: 'Community Analytics',
+    summary: 'Detect disconnected placement communities in the graph.',
+    useCase: 'Spot isolated departments, clubs, and weakly connected student groups.',
     to: routePaths.connectedComponents,
     icon: Users,
   },
   {
-    title: 'Cycle Detection',
-    summary: 'Detect circular friendship chains.',
-    useCase: 'Check whether a social network has closed loops or redundant links.',
+    title: 'Network Integrity Check',
+    summary: 'Detect suspicious referral loops and circular chains.',
+    useCase: 'Check whether a placement network has closed loops or redundant referrals.',
     to: routePaths.cycleDetection,
-    icon: RouteIcon,
-  },
-  {
-    title: 'Bipartite Check',
-    summary: 'Verify whether the network can be split into two groups.',
-    useCase: 'Model two-team assignments or relationship constraints.',
-    to: routePaths.bipartite,
-    icon: ShieldCheck,
-  },
-  {
-    title: 'Shortest Path',
-    summary: 'Find the minimum-hop route between two people.',
-    useCase: 'Explain six degrees of separation in a social graph.',
-    to: routePaths.shortestPath,
-    icon: Waypoints,
-  },
-  {
-    title: 'Dijkstra',
-    summary: 'Find the weighted shortest route through the network.',
-    useCase: 'Extend the same graph model toward weighted social or influence paths.',
-    to: routePaths.dijkstra,
-    icon: Sparkles,
+    icon: ShieldAlert,
   },
 ]
 
@@ -176,22 +121,22 @@ export const docPages: Record<'vision' | 'architecture' | 'requirements' | 'road
     title: 'Project Vision',
     eyebrow: 'Source of truth',
     summary:
-      'SocialGraph Lab turns classical graph algorithms into social-network stories so learners understand both the mechanics and the motivation behind each technique.',
+      'PlacementConnect turns graph analytics into a campus placement and alumni networking platform so users can understand both the workflow and the value of each algorithm.',
     sections: [
       {
         heading: 'What the project is',
         body:
-          'An educational web application for building, exploring, and analyzing social graphs with algorithm-backed scenarios such as friend discovery, community detection, and viral spread.',
+          'A professional networking interface for students, alumni, recruiters, placement cells, and faculty mentors, with graph-backed tools for discovery, community analysis, and integrity checks.',
       },
       {
         heading: 'Who it serves',
         body:
-          'The initial audience is undergraduate CS students, faculty, interview candidates, and independent learners who want a practical graph-theory reference.',
+          'The primary users are students and alumni, with placement administrators and recruiters using the same network to understand reach, clusters, and referral health.',
       },
       {
         heading: 'How the UI should behave',
         body:
-          'Every screen should connect a real social-network problem to the algorithm that solves it instead of presenting the algorithm in isolation.',
+          'Every screen should read like a placement product first and only reveal the underlying graph algorithm through the interaction pattern and analytics.',
       },
     ],
   },
@@ -199,22 +144,22 @@ export const docPages: Record<'vision' | 'architecture' | 'requirements' | 'road
     title: 'System Architecture',
     eyebrow: 'Version 1 design',
     summary:
-      'The first version is frontend-only. UI, algorithm modules, and visualization concerns stay separated so the pure TypeScript algorithms remain reusable.',
+      'PlacementConnect keeps a frontend-only architecture. UI, algorithm modules, and visualization concerns stay separated so the pure TypeScript algorithms remain reusable.',
     sections: [
       {
         heading: 'Responsibility split',
         body:
-          'Components render UI, pages define screens, algorithms stay in pure modules, and visualizations animate algorithm results without containing business rules.',
+          'Components render the placement portal UI, pages define the user journeys, algorithms stay in pure modules, and visualizations animate graph results without containing business rules.',
       },
       {
         heading: 'Why this matters',
         body:
-          'This structure keeps the project maintainable while making it easy to add BFS, DFS, shortest path, and influence analysis without rewriting the interface layer.',
+          'This structure keeps the project maintainable while making it easy to evolve BFS, DFS, community analytics, and integrity checks without rewriting the interface layer.',
       },
       {
         heading: 'Future dependency',
         body:
-          'Later algorithm pages and graph visualizations will consume the same graph model and shared types exposed from this foundation.',
+          'Future placement dashboards can continue consuming the same graph model and shared types exposed from this foundation.',
       },
     ],
   },
@@ -222,22 +167,22 @@ export const docPages: Record<'vision' | 'architecture' | 'requirements' | 'road
     title: 'Functional Requirements',
     eyebrow: 'Version 1 scope',
     summary:
-      'The must-have release includes graph creation, graph visualization, BFS, DFS, friend suggestions, connected components, and a learning panel for every algorithm page.',
+      'The must-have release includes network creation, visualization, BFS recommendations, DFS community exploration, connected components, and cycle integrity checks.',
     sections: [
       {
         heading: 'Core product needs',
         body:
-          'Users must be able to add and remove people and friendships, inspect the graph interactively, and understand traversal order, complexity, and real-world application.',
+          'Users must be able to add and remove students, inspect the professional network interactively, and understand reach, community structure, and referral health.',
       },
       {
-        heading: 'Educational requirement',
+        heading: 'Presentation requirement',
         body:
-          'Each algorithm page needs a description, time and space complexity, real-world use, and pseudocode so the lesson stays attached to the implementation.',
+          'Each algorithm page needs placement-oriented wording, consistent statistics cards, and a real-world explanation tied to the interaction.',
       },
       {
         heading: 'Non-functional guardrails',
         body:
-          'The app should stay beginner-friendly, quick on educational datasets, and maintainable through strict separation of concerns.',
+          'The app should stay polished, responsive, fast on placement-sized datasets, and maintainable through strict separation of concerns.',
       },
     ],
   },
@@ -245,22 +190,22 @@ export const docPages: Record<'vision' | 'architecture' | 'requirements' | 'road
     title: 'Development Roadmap',
     eyebrow: 'Implementation order',
     summary:
-      'Milestone 1 establishes the shell. Later milestones add the graph builder, visualization, BFS, DFS, friend suggestions, community detection, shortest path, influencer analysis, learning panels, polish, and tests.',
+      'Milestone 1 establishes the shell. Later milestones add the network builder, visualization, BFS discovery, DFS exploration, community analytics, integrity checks, polish, and tests.',
     sections: [
       {
         heading: 'Build order',
         body:
-          'The roadmap intentionally starts with the project scaffold, then adds the graph model, then algorithm-backed experiences so every step remains runnable.',
+          'The roadmap intentionally starts with the project scaffold, then adds the graph model, then algorithm-backed placement experiences so every step remains runnable.',
       },
       {
         heading: 'Current dependency',
         body:
-          'This routed shell is the base that later modules will plug into.',
+          'This routed shell is the base that later placement modules will plug into.',
       },
       {
         heading: 'What comes next',
         body:
-          'After the shell, the next concrete dependency is a reusable graph model and the first algorithm modules.',
+          'After the shell, the next concrete dependency is the reusable graph model and the four active analytics modules.',
       },
     ],
   },
