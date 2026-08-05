@@ -86,19 +86,18 @@ function AppShell({ children }: AppShellProps) {
   }
 
   async function handleLoadSample() {
-    try {
-      const response = await fetch(
-        '/db1.json',
-      )
-
-      const sample =
-        (await response.json()) as Graph
-
-      setGraph(sample)
-    } catch {
-      alert('Unable to load sample network.')
+  try {
+    const response = await fetch(`${import.meta.env.BASE_URL}db1.json`)
+    if (!response.ok) {
+      throw new Error('Sample dataset not found')
     }
+    const sample = (await response.json()) as Graph
+    setGraph(sample)
+  } catch (error) {
+    console.error(error)
+    alert('Unable to load sample network.')
   }
+}
 
   function handleClear() {
     if (!confirm('Clear current placement network?'))
