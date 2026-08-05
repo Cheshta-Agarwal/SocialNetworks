@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/', 
+  base: '/SocialNetworks/socialgraph-lab/', 
   plugins: [
     react(),
     tailwindcss(),
