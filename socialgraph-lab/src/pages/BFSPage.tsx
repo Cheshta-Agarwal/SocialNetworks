@@ -5,7 +5,7 @@ import MetricCard from '../components/ui/MetricCard'
 import { useGraphStore } from '../store/graphStore'
 
 function BFSPage() {
-  alert("BFS Page Loaded")
+  // alert("BFS Page Loaded")
   const { graph } = useGraphStore()
   const [startNodeId, setStartNodeId] = useState('')
   const bfsResult = useMemo(() => {
