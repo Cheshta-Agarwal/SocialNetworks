@@ -1,10 +1,9 @@
 import {
   BookOpen,
-  BriefcaseBusiness,
   Home,
-  Layers3,
-  ShieldAlert,
+  Search,
   Users,
+  ShieldCheck,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -54,159 +53,188 @@ export const navigationSections: NavigationSection[] = [
     items: [],
   },
   {
-    heading: 'Algorithms',
+    heading: 'Student Features',
     items: [
       {
         label: 'Discover Alumni',
         to: routePaths.bfs,
-        icon: Layers3,
+        icon: Search,
       },
       {
-        label: 'Professional Community Explorer',
+        label: 'Professional Network',
         to: routePaths.dfs,
-        icon: BriefcaseBusiness,
+        icon: Users,
       },
+    ],
+  },
+  {
+    heading: 'Placement Analytics',
+    items: [
       {
-        label: 'Community Analytics',
+        label: 'Department Connectivity',
         to: routePaths.connectedComponents,
         icon: Users,
       },
       {
-        label: 'Network Integrity Check',
+        label: 'Referral Integrity',
         to: routePaths.cycleDetection,
-        icon: ShieldAlert,
+        icon: ShieldCheck,
+      },
+    ],
+  },
+  {
+    heading: 'Documentation',
+    items: [
+      {
+        label: 'Documentation',
+        to: routePaths.documentation,
+        icon: BookOpen,
       },
     ],
   },
 ]
 
 export const navigationItems: NavigationItem[] = [
-  { label: 'Home', to: routePaths.home, icon: Home },
-  { label: 'Documentation', to: routePaths.documentation, icon: BookOpen },
+  {
+    label: 'Home',
+    to: routePaths.home,
+    icon: Home,
+  },
 ]
 
 export const algorithmCards: AlgorithmCard[] = [
   {
     title: 'Discover Alumni',
-    summary: 'Find alumni and professionals level by level from any student.',
-    useCase: 'Model nearby alumni recommendations and professional reach.',
+    summary:
+      'Find alumni and professionals connected to a selected student.',
+    useCase:
+      'Recommend mentors, alumni and networking opportunities.',
     to: routePaths.bfs,
-    icon: Layers3,
+    icon: Search,
   },
   {
-    title: 'Professional Community Explorer',
-    summary: 'Explore a connected professional community depth-first.',
-    useCase: 'Reveal referral chains, community structure, and traversal order.',
+    title: 'Professional Network',
+    summary:
+      'Explore an entire professional community starting from one student.',
+    useCase:
+      'Understand mentorship chains and professional reach.',
     to: routePaths.dfs,
-    icon: BriefcaseBusiness,
+    icon: Users,
   },
   {
-    title: 'Community Analytics',
-    summary: 'Detect disconnected placement communities in the graph.',
-    useCase: 'Spot isolated departments, clubs, and weakly connected student groups.',
+    title: 'Department Connectivity',
+    summary:
+      'Identify isolated departments and disconnected student groups.',
+    useCase:
+      'Help the Placement Cell improve networking initiatives.',
     to: routePaths.connectedComponents,
     icon: Users,
   },
   {
-    title: 'Network Integrity Check',
-    summary: 'Detect suspicious referral loops and circular chains.',
-    useCase: 'Check whether a placement network has closed loops or redundant referrals.',
+    title: 'Referral Integrity',
+    summary:
+      'Detect suspicious referral loops inside the placement network.',
+    useCase:
+      'Prevent fake recommendation chains.',
     to: routePaths.cycleDetection,
-    icon: ShieldAlert,
+    icon: ShieldCheck,
   },
 ]
 
-export const docPages: Record<'vision' | 'architecture' | 'requirements' | 'roadmap', PageDefinition> = {
-  vision: {
+export const docPages = {  vision: {
     title: 'Project Vision',
-    eyebrow: 'Source of truth',
+    eyebrow: 'Placement Intelligence',
     summary:
-      'PlacementConnect turns graph analytics into a campus placement and alumni networking platform so users can understand both the workflow and the value of each algorithm.',
+      'PlacementConnect is a graph-powered analytics platform that helps universities strengthen student, alumni, recruiter and mentor networks through interactive visualization and graph algorithms.',
+
     sections: [
       {
-        heading: 'What the project is',
+        heading: 'Problem Statement',
         body:
-          'A professional networking interface for students, alumni, recruiters, placement cells, and faculty mentors, with graph-backed tools for discovery, community analysis, and integrity checks.',
+          'Placement opportunities often depend on professional relationships rather than resumes alone. Universities usually maintain alumni databases but lack tools to analyze how students, mentors, alumni and recruiters are connected.',
       },
       {
-        heading: 'Who it serves',
+        heading: 'Our Solution',
         body:
-          'The primary users are students and alumni, with placement administrators and recruiters using the same network to understand reach, clusters, and referral health.',
+          'PlacementConnect transforms placement data into an interactive relationship graph, allowing students to discover mentors while enabling placement officers to monitor network health and engagement.',
       },
       {
-        heading: 'How the UI should behave',
+        heading: 'Target Users',
         body:
-          'Every screen should read like a placement product first and only reveal the underlying graph algorithm through the interaction pattern and analytics.',
+          'Students, Alumni, Recruiters, Faculty Mentors and Placement Cell Administrators.',
       },
     ],
   },
   architecture: {
     title: 'System Architecture',
-    eyebrow: 'Version 1 design',
+    eyebrow: 'Frontend Architecture',
     summary:
-      'PlacementConnect keeps a frontend-only architecture. UI, algorithm modules, and visualization concerns stay separated so the pure TypeScript algorithms remain reusable.',
+      'The application follows a modular React architecture where visualization, graph algorithms and state management remain completely independent.',
+
     sections: [
       {
-        heading: 'Responsibility split',
+        heading: 'Presentation Layer',
         body:
-          'Components render the placement portal UI, pages define the user journeys, algorithms stay in pure modules, and visualizations animate graph results without containing business rules.',
+          'React pages and reusable components provide the dashboard interface while React Flow renders the graph visualization.',
       },
       {
-        heading: 'Why this matters',
+        heading: 'Business Layer',
         body:
-          'This structure keeps the project maintainable while making it easy to evolve BFS, DFS, community analytics, and integrity checks without rewriting the interface layer.',
+          'Pure TypeScript implementations perform BFS, DFS, Connected Components and Cycle Detection without depending on React.',
       },
       {
-        heading: 'Future dependency',
+        heading: 'State Management',
         body:
-          'Future placement dashboards can continue consuming the same graph model and shared types exposed from this foundation.',
+          'Zustand stores a single shared graph model which is consumed by every algorithm page.',
       },
     ],
   },
   requirements: {
     title: 'Functional Requirements',
-    eyebrow: 'Version 1 scope',
+    eyebrow: 'Core Modules',
     summary:
-      'The must-have release includes network creation, visualization, BFS recommendations, DFS community exploration, connected components, and cycle integrity checks.',
+      'The system allows creation of placement networks, interactive visualization, alumni discovery, community analytics and referral integrity monitoring.',
     sections: [
       {
-        heading: 'Core product needs',
+        heading: 'Student Module',
         body:
-          'Users must be able to add and remove students, inspect the professional network interactively, and understand reach, community structure, and referral health.',
+          'Students can build their professional network, discover alumni and explore mentorship communities.',
       },
       {
-        heading: 'Presentation requirement',
+        heading: 'Placement Cell',
         body:
-          'Each algorithm page needs placement-oriented wording, consistent statistics cards, and a real-world explanation tied to the interaction.',
+          'Administrators can identify isolated departments and monitor overall placement connectivity.',
       },
       {
-        heading: 'Non-functional guardrails',
+        heading: 'Security',
         body:
-          'The app should stay polished, responsive, fast on placement-sized datasets, and maintainable through strict separation of concerns.',
+          'Referral Integrity Monitor detects suspicious cyclic recommendation patterns that may indicate fake referral chains.',
       },
     ],
   },
   roadmap: {
     title: 'Development Roadmap',
-    eyebrow: 'Implementation order',
+    eyebrow: 'Future Scope',
     summary:
-      'Milestone 1 establishes the shell. Later milestones add the network builder, visualization, BFS discovery, DFS exploration, community analytics, integrity checks, polish, and tests.',
+      'Future versions will integrate authentication, recruiter dashboards, company recommendations, skill matching and AI-powered career guidance.',
     sections: [
       {
-        heading: 'Build order',
+        heading: 'Version 2',
         body:
-          'The roadmap intentionally starts with the project scaffold, then adds the graph model, then algorithm-backed placement experiences so every step remains runnable.',
+          'Authentication, user profiles and persistent database integration.',
       },
       {
-        heading: 'Current dependency',
+        heading: 'Version 3',
+
         body:
-          'This routed shell is the base that later placement modules will plug into.',
+          'Company recommendation engine and recruiter management.',
       },
       {
-        heading: 'What comes next',
+        heading: 'Version 4',
+
         body:
-          'After the shell, the next concrete dependency is the reusable graph model and the four active analytics modules.',
+          'Machine learning based career recommendations and placement prediction.',
       },
     ],
   },
-}
+} as const

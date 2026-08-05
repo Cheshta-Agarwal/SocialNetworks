@@ -15,13 +15,14 @@ type GraphViewerProps = {
   pathNodes?: string[]
   pathEdges?: HighlightedEdge[]
   nodeStyles?: Record<string, CSSProperties>
+  onNodeClick?: (nodeId: string) => void
 }
 
 function getEdgeKey(sourceId: string, targetId: string) {
   return [sourceId, targetId].sort().join('__')
 }
 
-function GraphViewer({ highlightedNodes, highlightedEdges, pathNodes, pathEdges, nodeStyles }: GraphViewerProps) {
+function GraphViewer({ highlightedNodes, highlightedEdges, pathNodes, pathEdges, nodeStyles, onNodeClick }: GraphViewerProps) {
   const { graph } = useGraphStore()
   const flowInstanceRef = useRef<ReactFlowInstance | null>(null)
 
@@ -142,22 +143,25 @@ function GraphViewer({ highlightedNodes, highlightedEdges, pathNodes, pathEdges,
   }, [renderedNodes, renderedEdges])
 
   return (
-    <section className="rounded-2xl bg-slate-950/40 p-4 shadow-lg shadow-slate-950/20">
+    <section className="h-full rounded-3xl border border-white/10 bg-white/5 p-5">
       {/* <div className="space-y-2">
         <h2 className="text-lg font-semibold text-white">Graph Viewer</h2>
         <p className="text-sm text-slate-200">Read-only React Flow preview of the current graph.</p>
       </div> */}
 
-      <div className="mt-5 h-[620px] overflow-hidden rounded-3xl border border-white/10 bg-slate-950/85">
+      <div className="h-[700px] overflow-hidden rounded-3xl border border-white/10 bg-slate-950/85">
         <ReactFlow
           nodes={renderedNodes}
           edges={renderedEdges}
           onInit={(instance) => {
             flowInstanceRef.current = instance
           }}
+          onNodeClick={(_, node) => {
+            onNodeClick?.(node.id)
+          }}
           nodesDraggable={false}
           nodesConnectable={false}
-          elementsSelectable={false}
+          elementsSelectable
           nodesFocusable={false}
           edgesFocusable={false}
           panOnDrag
@@ -167,11 +171,13 @@ function GraphViewer({ highlightedNodes, highlightedEdges, pathNodes, pathEdges,
           zoomOnDoubleClick={false}
           deleteKeyCode={null}
           fitView
-          proOptions={{ hideAttribution: true }}
+          proOptions={{
+            hideAttribution: true,
+          }}
         >
           <Background gap={24} size={1.2} color="rgba(148, 163, 184, 0.10)" />
           <Controls position="top-right" showInteractive={false} className="!bg-slate-900/90 !border-slate-700 !text-slate-100" />
-          <MiniMap zoomable pannable position="bottom-right" nodeStrokeWidth={3} />
+          <MiniMap zoomable pannable position="bottom-right" nodeStrokeWidth={3} nodeBorderRadius={8} maskColor="rgba(15,23,42,.55)"/>
         </ReactFlow>
       </div>
     </section>

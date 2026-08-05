@@ -1,136 +1,150 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { ShieldAlert } from 'lucide-react'
 import GraphViewer from '../components/graph/GraphViewer'
 import MetricCard from '../components/ui/MetricCard'
-import { runCycleDetection, runDFS } from '../algorithms'
-import type { TraversalResult } from '../types/algorithm'
+import { runCycleDetection } from '../algorithms'
 import { useGraphStore } from '../store/graphStore'
 
-const emptyTraversalResult: TraversalResult = {
-  visitedNodes: [],
-  visitedEdges: [],
-}
-
 function CycleDetectionPage() {
-  return (
-    <CycleDetectionWorkspace />
-  )
-}
-
-function CycleDetectionWorkspace() {
   const { graph } = useGraphStore()
-  const [selectedNodeId, setSelectedNodeId] = useState('')
-  const [cycleDetected, setCycleDetected] = useState<boolean | null>(null)
-  const [cycleEdges, setCycleEdges] = useState<TraversalResult['visitedEdges']>([])
-  const [traversalResult, setTraversalResult] = useState<TraversalResult>(emptyTraversalResult)
 
-  const selectedNodeExists = useMemo(
-    () => graph.nodes.some((node) => node.id === selectedNodeId),
-    [graph.nodes, selectedNodeId],
-  )
-
-  const canRunCheck = selectedNodeExists && graph.nodes.length > 0
-
-  function handleCheckCycle() {
-    if (!selectedNodeExists) {
-      return
-    }
-
-    const result = runCycleDetection(graph)
-    setCycleDetected(result.hasCycle)
-    setCycleEdges(result.cycleEdges ?? [])
-    setTraversalResult(runDFS(graph, selectedNodeId))
-  }
-
-  const cycleNodes = useMemo(
-    () => Array.from(new Set(cycleEdges.flatMap((edge) => [edge.sourceId, edge.targetId]))),
-    [cycleEdges],
-  )
+  const result = useMemo(() => runCycleDetection(graph), [graph])
 
   return (
     <div className="space-y-6">
-      <section className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-cyan-400/10 via-slate-950/50 to-emerald-400/10 p-6 shadow-2xl shadow-slate-950/20">
-        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">
-          NETWORK INTEGRITY CHECK
-        </p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-          Detect suspicious referral loops in the placement network.
+      <div>
+        <h1 className="text-3xl font-bold text-white">
+          Referral Integrity
         </h1>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
-          When a cycle exists, the loop is highlighted directly on the graph so administrators can
-          inspect the suspicious chain.
-        </p>
-      </section>
 
-      <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+        <p className="mt-2 text-slate-400">
+          Detect suspicious referral loops and maintain a trustworthy placement network.
+        </p>
+      </div>
+
+      <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+        <div className="grid gap-4 xl:grid-cols-4 md:grid-cols-2">
+          <MetricCard
+            label="Status"
+            value={result.hasCycle ? 'Warning' : 'Healthy'}
+          />
+          <MetricCard
+            label="Members"
+            value={graph.nodes.length}
+          />
+          <MetricCard
+            label="Connections"
+            value={graph.edges.length}
+          />
+          <MetricCard
+            label="Risk Level"
+            value={result.hasCycle ? 'High' : 'Low'}
+          />
+        </div>
+      </div>
+
+      <section className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
         <div className="space-y-6">
-          <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold text-white">Run Integrity Check</h2>
-              <p className="text-sm text-slate-300">
-                Select a profile for traversal context and then inspect the referral loop status.
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+            <div className="flex items-center gap-3">
+              <ShieldAlert
+                className={`h-8 w-8 ${
+                  result.hasCycle
+                    ? 'text-red-400'
+                    : 'text-emerald-400'
+                }`}
+              />
+
+              <div>
+                <h2 className="text-lg font-semibold text-white">
+                  Security Assessment
+                </h2>
+
+                <p className="text-sm text-slate-400">
+                  Automated referral integrity analysis
+                </p>
+              </div>
+            </div>
+
+            <div
+              className={`mt-5 rounded-2xl border p-4 ${
+                result.hasCycle
+                  ? 'border-red-400/20 bg-red-500/10'
+                  : 'border-emerald-400/20 bg-emerald-500/10'
+              }`}
+            >
+
+              <p
+                className={`font-semibold ${
+                  result.hasCycle
+                    ? 'text-red-300'
+                    : 'text-emerald-300'
+                }`}
+              >
+
+                {result.hasCycle
+                  ? 'Suspicious referral loop detected.'
+                  : 'Network integrity verified.'}
+
+              </p>
+
+              <p className="mt-3 text-sm leading-7 text-slate-300">
+
+                {result.hasCycle
+                  ? 'Circular recommendation chains were found in the placement network. These relationships should be reviewed before approving referrals.'
+                  : 'No referral loops were detected. The current placement network appears healthy and follows expected referral patterns.'}
               </p>
             </div>
 
-            <div className="mt-5 space-y-3">
-              <label className="block text-sm font-medium text-slate-200" htmlFor="cycle-start-node">
-                Start profile
-              </label>
-              <select
-                id="cycle-start-node"
-                value={selectedNodeId}
-                onChange={(event) => setSelectedNodeId(event.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40 focus:ring-2 focus:ring-cyan-300/20 disabled:text-slate-500"
-                disabled={graph.nodes.length === 0}
-              >
-                <option value="">Select a student or professional</option>
-                {graph.nodes.map((node) => (
-                  <option key={node.id} value={node.id}>
-                    {node.displayName}
-                  </option>
-                ))}
-              </select>
+            <div className="mt-5 rounded-2xl border border-cyan-400/10 bg-cyan-400/5 p-4">
+            {result.hasCycle && (
+              <div className="mt-5 rounded-2xl border border-red-400/20 bg-red-500/5 p-4">
+                <h3 className="font-semibold text-red-300">
+                  Referral Loop
+                </h3>
 
-              <button
-                type="button"
-                onClick={handleCheckCycle}
-                disabled={!canRunCheck}
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Check Network
-              </button>
-            </div>
-          </section>
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  {result.cycleNodes.map((id, index) => {
+                    const person = graph.nodes.find((node) => node.id === id)
 
-          <section className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-slate-950/20">
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold text-white">Network Insights</h2>
-              <p className="text-sm text-slate-300">Referral loop result for the current graph.</p>
-            </div>
+                    return (
+                      <div
+                        key={`${id}-${index}`}
+                        className="flex items-center gap-2"
+                      >
+                        <span className="rounded-lg bg-slate-900/60 px-3 py-2 text-sm text-white">
+                          {person?.displayName}
+                        </span>
 
-            <div className="mt-5 grid gap-4 sm:grid-cols-3">
-              <MetricCard
-                label="Status"
-                value={cycleDetected === null ? 'Not checked' : cycleDetected ? 'Warning' : 'Healthy'}
-                helperText={cycleDetected ? 'A cycle exists in the referral chain.' : 'No suspicious loop detected.'}
-              />
-              <MetricCard
-                label="Highlighted Loop Edges"
-                value={cycleEdges.length}
-                helperText="Edges that form the detected cycle."
-              />
-              <MetricCard
-                label="Traversal Context"
-                value={traversalResult.visitedEdges.length}
-                helperText="DFS edges used for the selected start profile."
-              />
+                        {index < result.cycleNodes.length - 1 && (
+                          <span className="text-red-300 font-bold">
+                            →
+                          </span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+              <h3 className="font-semibold text-cyan-300">
+                Why monitor referral integrity?
+              </h3>
+
+              <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                <li>• Prevent fake referral groups</li>
+                <li>• Detect recommendation abuse</li>
+                <li>• Increase recruiter confidence</li>
+                <li>• Maintain transparent placements</li>
+              </ul>
             </div>
-          </section>
+          </div>
         </div>
 
         <GraphViewer
-          highlightedEdges={traversalResult.visitedEdges}
-          pathNodes={cycleNodes}
-          pathEdges={cycleEdges}
+          highlightedNodes={result.cycleNodes}
+          highlightedEdges={result.cycleEdges}
         />
       </section>
     </div>

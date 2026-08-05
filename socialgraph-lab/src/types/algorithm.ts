@@ -38,5 +38,6 @@ export interface ConnectedComponentsResult {
 
 export interface CycleDetectionResult {
   hasCycle: boolean
+  cycleNodes: string[]
   cycleEdges?: TraversalEdge[]
 }

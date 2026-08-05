@@ -68,11 +68,22 @@ export const runBFS: TraversalAlgorithm = (graph, startNodeId) => {
 
   for (const [nodeId, level] of distance.entries()) {
 
-    if (level !== 2) {
-      continue
-    }
+    if (level !== 2) continue
 
     friendsOfFriends++
+
+    const person = graph.nodes.find(node => node.id === nodeId)
+
+    if (!person) continue
+
+    // Recommend only professionals
+    if (
+      person.role !== 'Alumni' &&
+      person.role !== 'Recruiter' &&
+      person.role !== 'Faculty'
+    ) {
+      continue
+    }
 
     const neighbors = adjacency.get(nodeId) ?? []
 
@@ -90,9 +101,26 @@ export const runBFS: TraversalAlgorithm = (graph, startNodeId) => {
     })
   }
 
-  suggestions.sort(
-    (a, b) => b.mutualFriends - a.mutualFriends,
-  )
+  suggestions.sort((a, b) => {
+    if (b.mutualFriends !== a.mutualFriends) {
+      return b.mutualFriends - a.mutualFriends
+    }
+
+    const rolePriority = {
+      Recruiter: 3,
+      Alumni: 2,
+      Faculty: 1,
+      Student: 0,
+    }
+
+    const personA = graph.nodes.find(node => node.id === a.id)
+    const personB = graph.nodes.find(node => node.id === b.id)
+
+    return (
+      (rolePriority[personB?.role ?? 'Student']) -
+      (rolePriority[personA?.role ?? 'Student'])
+    )
+  })
 
   const maxDistance =
     Math.max(...distance.values())

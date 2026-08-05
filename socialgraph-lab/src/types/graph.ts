@@ -1,23 +1,30 @@
 /**
- * Represents a student or professional profile in the placement network.
+ * Represents a member in the campus placement network.
  */
+
 export interface Person {
   id: string
+
   displayName: string
-  role?: string
+
+  role: 'Student' | 'Alumni' | 'Recruiter' | 'Faculty'
+
+  department: string
+
+  batch: string
+
+  company?: string
 }
 
 /**
- * Represents a professional connection between two profiles in the network.
+ * Professional relationship between two members.
  */
+
 export interface Friendship {
   sourceId: string
   targetId: string
 }
 
-/**
- * Represents the full placement network graph.
- */
 export interface Graph {
   nodes: Person[]
   edges: Friendship[]
