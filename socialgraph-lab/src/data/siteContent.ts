@@ -60,26 +60,26 @@ export const navigationSections: NavigationSection[] = [
         to: routePaths.bfs,
         icon: Search,
       },
-      {
-        label: 'Professional Network',
-        to: routePaths.dfs,
-        icon: Users,
-      },
     ],
   },
   {
     heading: 'Placement Analytics',
     items: [
       {
+        label: 'Professional Network',
+        to: routePaths.dfs,
+        icon: Users,
+      },
+      {
         label: 'Department Connectivity',
         to: routePaths.connectedComponents,
         icon: Users,
       },
-      {
-        label: 'Referral Integrity',
-        to: routePaths.cycleDetection,
-        icon: ShieldCheck,
-      },
+      // {
+      //   label: 'Referral Integrity',
+      //   to: routePaths.cycleDetection,
+      //   icon: ShieldCheck,
+      // },
     ],
   },
   {

@@ -1,0 +1,255 @@
+{
+  "nodes": [
+    {
+      "id": "c1",
+      "displayName": "Rahul",
+      "role": "Student",
+      "department": "CSE",
+      "batch": "2026"
+    },
+    {
+      "id": "c2",
+      "displayName": "Priya",
+      "role": "Student",
+      "department": "CSE",
+      "batch": "2026"
+    },
+    {
+      "id": "c3",
+      "displayName": "Aman",
+      "role": "Student",
+      "department": "CSE",
+      "batch": "2025"
+    },
+    {
+      "id": "c4",
+      "displayName": "Neha",
+      "role": "Student",
+      "department": "CSE",
+      "batch": "2025"
+    },
+    {
+      "id": "c5",
+      "displayName": "Rohit",
+      "role": "Student",
+      "department": "CSE",
+      "batch": "2024"
+    },
+    {
+      "id": "cf",
+      "displayName": "Dr. Mehta",
+      "role": "Faculty",
+      "department": "CSE",
+      "batch": "Faculty"
+    },
+    {
+      "id": "ca1",
+      "displayName": "Riya Sharma",
+      "role": "Alumni",
+      "department": "CSE",
+      "batch": "2022",
+      "company": "Google"
+    },
+    {
+      "id": "ca2",
+      "displayName": "Arjun Singh",
+      "role": "Alumni",
+      "department": "CSE",
+      "batch": "2021",
+      "company": "Microsoft"
+    },
+    {
+      "id": "cr",
+      "displayName": "Google Recruiter",
+      "role": "Recruiter",
+      "department": "Industry",
+      "batch": "Recruiter",
+      "company": "Google"
+    },
+    {
+      "id": "e1",
+      "displayName": "Sneha",
+      "role": "Student",
+      "department": "ECE",
+      "batch": "2026"
+    },
+    {
+      "id": "e2",
+      "displayName": "Vikas",
+      "role": "Student",
+      "department": "ECE",
+      "batch": "2025"
+    },
+    {
+      "id": "e3",
+      "displayName": "Anjali",
+      "role": "Student",
+      "department": "ECE",
+      "batch": "2025"
+    },
+    {
+      "id": "e4",
+      "displayName": "Yash",
+      "role": "Student",
+      "department": "ECE",
+      "batch": "2024"
+    },
+    {
+      "id": "ef",
+      "displayName": "Dr. Rao",
+      "role": "Faculty",
+      "department": "ECE",
+      "batch": "Faculty"
+    },
+    {
+      "id": "ea1",
+      "displayName": "Kunal",
+      "role": "Alumni",
+      "department": "ECE",
+      "batch": "2022",
+      "company": "Amazon"
+    },
+    {
+      "id": "ea2",
+      "displayName": "Meera",
+      "role": "Alumni",
+      "department": "ECE",
+      "batch": "2021",
+      "company": "NVIDIA"
+    },
+    {
+      "id": "er",
+      "displayName": "Amazon Recruiter",
+      "role": "Recruiter",
+      "department": "Industry",
+      "batch": "Recruiter",
+      "company": "Amazon"
+    },
+    {
+      "id": "v1",
+      "displayName": "Pooja",
+      "role": "Student",
+      "department": "Civil",
+      "batch": "2026"
+    },
+    {
+      "id": "v2",
+      "displayName": "Aditya",
+      "role": "Student",
+      "department": "Civil",
+      "batch": "2025"
+    },
+    {
+      "id": "v3",
+      "displayName": "Harsh",
+      "role": "Student",
+      "department": "Civil",
+      "batch": "2024"
+    },
+    {
+      "id": "vf",
+      "displayName": "Dr. Iyer",
+      "role": "Faculty",
+      "department": "Civil",
+      "batch": "Faculty"
+    },
+    {
+      "id": "va",
+      "displayName": "Nitin",
+      "role": "Alumni",
+      "department": "Civil",
+      "batch": "2022",
+      "company": "L&T"
+    },
+    {
+      "id": "vr",
+      "displayName": "L&T Recruiter",
+      "role": "Recruiter",
+      "department": "Industry",
+      "batch": "Recruiter",
+      "company": "L&T"
+    }
+  ],
+  "edges": [
+    {
+      "sourceId": "c1",
+      "targetId": "c2"
+    },
+    {
+      "sourceId": "c2",
+      "targetId": "c3"
+    },
+    {
+      "sourceId": "c3",
+      "targetId": "c4"
+    },
+    {
+      "sourceId": "c4",
+      "targetId": "c5"
+    },
+    {
+      "sourceId": "c3",
+      "targetId": "cf"
+    },
+    {
+      "sourceId": "cf",
+      "targetId": "ca1"
+    },
+    {
+      "sourceId": "ca1",
+      "targetId": "ca2"
+    },
+    {
+      "sourceId": "ca2",
+      "targetId": "cr"
+    },
+    {
+      "sourceId": "e1",
+      "targetId": "e2"
+    },
+    {
+      "sourceId": "e2",
+      "targetId": "e3"
+    },
+    {
+      "sourceId": "e3",
+      "targetId": "e4"
+    },
+    {
+      "sourceId": "e2",
+      "targetId": "ef"
+    },
+    {
+      "sourceId": "ef",
+      "targetId": "ea1"
+    },
+    {
+      "sourceId": "ea1",
+      "targetId": "ea2"
+    },
+    {
+      "sourceId": "ea2",
+      "targetId": "er"
+    },
+    {
+      "sourceId": "v1",
+      "targetId": "v2"
+    },
+    {
+      "sourceId": "v2",
+      "targetId": "v3"
+    },
+    {
+      "sourceId": "v2",
+      "targetId": "vf"
+    },
+    {
+      "sourceId": "vf",
+      "targetId": "va"
+    },
+    {
+      "sourceId": "va",
+      "targetId": "vr"
+    }
+  ]
+}
